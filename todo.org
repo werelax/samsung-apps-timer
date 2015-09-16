@@ -1,0 +1,10 @@
+* ACTIONABLES
+
+* MISSING
+** Deletions / Editions
+1. Deleting (editing?) a program
+2. Deleting (editing?) a timer
+
+Both can be solved implemeting some kind of "edit mode" that shows two
+action buttons below every item (and separates the items a bit so it
+becomes easy to recognize which button belongs to which item).
