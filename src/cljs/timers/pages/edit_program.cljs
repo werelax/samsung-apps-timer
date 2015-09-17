@@ -8,7 +8,7 @@
 
 (defn page [id]
   (marauder/set-current! program (if id
-                                   (marauder/find-by program :id id)
+                                   (marauder/get-by program :id id)
                                    (marauder/bake-new program)))
   (fn []
     [:div

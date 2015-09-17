@@ -9,7 +9,8 @@
   (-bake-new [resource params] "Bake a new item (using provided generator)")
   (get-all [resource] "Get the full collection.")
   (conj! [resource item] "Inserts ITEM in the collection (maybe gives :id).")
-  (find-by [resource key value] "Find an item by :key.")
+  (get-by [resource key value] "Find an item by :key.")
+  (find-by [resource key value] "Find all items by :key.")
   (replace! [resource old new] "Switch an item for another.")
   (remove! [resource item] "Removes ITEM from the collection."))
 
@@ -53,6 +54,11 @@
        AtomCollection
        (data [_] data)
        (get-all [_] (get-in @atom path []))
+       (find-by [this key value]
+         (filter #(= (key %) value)
+                 (get-all this)))
+       (get-by [this key value]
+         (first (find-by this get value)))
        (-bake-new [_ params] (apply generator params))
        (conj! [_ item]
          (swap! atom update-in path
