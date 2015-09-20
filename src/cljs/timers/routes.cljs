@@ -20,7 +20,7 @@
   (session/put! :current-page {:name :program
                                :params [program-id]}))
 
-(secretary/defroute "/:program-id/new" [program-id]
+(secretary/defroute new-timer-path "/:program-id/new" [program-id]
   (session/put! :current-page {:name :edit-timer
                                :params [program-id nil]}))
 
@@ -28,11 +28,11 @@
   (session/put! :current-page {:name :edit-program
                                :params [program-id]}))
 
-(secretary/defroute "/:program-id/start" [program-id timer-id]
+(secretary/defroute start-program-path "/:program-id/start" [program-id timer-id]
   (session/put! :current-page {:name :timer
                                :params [program-id timer-id]}))
 
-(secretary/defroute "/:program-id/:timer-id" [program-id timer-id]
+(secretary/defroute edit-timer-path "/:program-id/:timer-id" [program-id timer-id]
   (session/put! :current-page {:name :edit-timer
                                :params [program-id timer-id]}))
 

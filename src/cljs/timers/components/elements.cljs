@@ -10,9 +10,24 @@
    [:a.btn.btn-primary {:href href}
     [:span.fa.fa-plus]]])
 
-(defn accept-cancel-buttons [ok-fn cancel-fn]
+(defn button [{title :title action :action color :color icon :icon href :href
+               :or {color :primary :href "#"}}]
+  [:a.btn {:href href
+           :class (str "btn-" (name color))
+           :on-click (when action
+                       (utils/prevent-and-call action))}
+   " "
+   (if icon
+     [:span.fa {:class icon} title]
+     [:span title])])
+
+(defn two-button-bar [left right]
   [:div.two-cols
-   [:a.btn.btn-terciary {:href "#" :on-click (utils/prevent-and-call cancel-fn)}
-    " " [:span.fa.fa-close]]
-   [:a.btn.btn-secondary {:href "#" :on-click (utils/prevent-and-call ok-fn)}
-    " " [:span.fa.fa-check]]])
+   (button left)
+   (button right)])
+
+(defn accept-cancel-buttons [ok-fn cancel-fn]
+  (two-button-bar {:title "" :action cancel-fn
+                   :color :terciary :icon "fa-close"}
+                  {:title "" :action ok-fn
+                   :color :secondary :icon "fa-check"}))

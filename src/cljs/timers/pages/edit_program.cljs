@@ -3,7 +3,6 @@
             [timers.lib.marauder :as marauder]
             [timers.page-utils :as utils]
             [timers.components.elements :as elements]
-            [timers.components.listing :as listing]
             [timers.routes :as routes]))
 
 (defn page [id]
@@ -27,6 +26,4 @@
         [:label {:for "title"} "Nombre"]
         [:input {:name "title" :type "text"
                  :value (get (marauder/get-current program) :title)
-                 :on-change #(marauder/update-current!
-                              program assoc :title
-                              (-> % .-target .-value))}]]]]]))
+                 :on-change (utils/form-updater program :title)}]]]]]))

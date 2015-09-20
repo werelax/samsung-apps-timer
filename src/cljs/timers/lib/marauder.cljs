@@ -1,7 +1,18 @@
 (ns timers.lib.marauder
-  (:refer-clojure :exclude [conj! replace! remove!])
+  (:refer-clojure :exclude [conj! replace! reset!])
   (:require [reagent.core :as reagent :refer [atom]]
             [reagent.session :as session]))
+
+;; TODO:
+;; - I would like to think about adding some more resource types:
+;; --- session: a map that can be (invalidate!)
+;; --- page-session: a map that only lives until route change
+;; --- map: wonder if this is any good?
+;; --- element: just one single element
+;; -- THE BENEFIT of doing all this would be to couple the rest of the
+;;    code to a PROTOCOL & a VAR, not a path in the atom. And, with clojure,
+;;    it would be quite easy to just swap the implementation for something else
+;;    like server-storage or something like that.
 
 (defprotocol AtomCollection
   "Manage a collection of items inside an state atom."
@@ -9,6 +20,7 @@
   (-bake-new [resource params] "Bake a new item (using provided generator)")
   (get-all [resource] "Get the full collection.")
   (conj! [resource item] "Inserts ITEM in the collection (maybe gives :id).")
+  (reset! [resource coll] "Resets the value of the resource to the given COLL.")
   (get-by [resource key value] "Find an item by :key.")
   (find-by [resource key value] "Find all items by :key.")
   (replace! [resource old new] "Switch an item for another.")
@@ -45,8 +57,11 @@
    :atom nil
    :current-atom nil})
 
-(defn resource
-  ([data] (resource data {}))
+;; -------------------------
+;; RESOURCE TYPE: Collection
+
+(defn collection
+  ([data] (collection data {}))
   ([data defaults]
    (let [{:keys [path atom current-atom generator id-key]
           :as data} (merge lib-defaults defaults data)]
@@ -54,20 +69,19 @@
        AtomCollection
        (data [_] data)
        (get-all [_] (get-in @atom path []))
-       (find-by [this key value]
-         (filter #(= (key %) value)
-                 (get-all this)))
        (get-by [this key value]
-         (first (find-by this get value)))
+         (first (find-by this key value)))
        (-bake-new [_ params] (apply generator params))
        (conj! [_ item]
          (swap! atom update-in path
                 #(conj % (if (id-key item)
                            item
                            (merge item (get-id))))))
+       (reset! [_ coll]
+         (swap! atom assoc-in path coll))
        (find-by [this key value]
-         (first (filter #(= (key %) value)
-                        (get-all this))))
+         (filter #(= (key %) value)
+                 (get-all this)))
        (replace! [_ old new]
          (swap! atom update-in path
                 #(replace {old new} %)))
@@ -85,7 +99,7 @@
        (save-current! [this]
          (let [current (get-current this)
                current-id (get current id-key :new)
-               item (find-by this id-key current-id)]
+               item (get-by this id-key current-id)]
            (if (= current-id :new)
              (conj! this (merge current (get-id)))
              (replace! this item current))

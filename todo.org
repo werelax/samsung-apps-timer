@@ -1,4 +1,15 @@
 * ACTIONABLES
+- [ ] The timer screen
+- [ ] Change to the next timer of the program
+- [ ] End of program screen (a info msg + just one button: [OK])
+- [ ] A initial warmup screen would be good, too (like a 5s countdown)
+
+* DEBT
+
+- [MISSING] edit/delete the timers
+- [MISSING] edit/delete the programs
+
+- [IMPROVEMENT] show the program you're in (for the timer listing + time screen)
 
 * MISSING
 ** Deletions / Editions
