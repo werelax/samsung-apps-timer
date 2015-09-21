@@ -12,6 +12,8 @@
     (.preventDefault e)
     (thunk)))
 
-(defn form-updater [resource key]
-  #(marauder/update-current! resource assoc key
-                             (-> % .-target .-value)))
+(defn form-updater
+  ([resource key] (form-updater resource key identity))
+  ([resource key transformer]
+   #(marauder/update-current! resource assoc key
+                              (transformer (-> % .-target .-value)))))

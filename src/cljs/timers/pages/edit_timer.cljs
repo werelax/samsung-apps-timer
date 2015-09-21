@@ -33,4 +33,5 @@
           [:label {:for "min"} "Minutos"]
           [:input {:name "min", :type "number"
                    :value duration
-                   :on-change (utils/form-updater timer :duration)}]]])]]))
+                   :on-change (utils/form-updater timer :duration
+                                                  #(js/parseInt % 10))}]]])]]))
