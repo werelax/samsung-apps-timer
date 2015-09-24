@@ -10,12 +10,6 @@
               [timers.pages.edit-timer :as edit-timer]))
 
 ;; -------------------------
-;; Strategy
-;; (X) Static pages + static navigation
-;; ( ) Local rendering + behaviour (define atom routes, models, policy)
-;; ( ) Remote interaction
-
-;; -------------------------
 ;; Route-page Map
 (def names-to-pages
   {:main main/page

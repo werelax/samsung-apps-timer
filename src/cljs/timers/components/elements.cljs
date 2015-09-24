@@ -11,9 +11,10 @@
     [:span.fa.fa-plus]]])
 
 (defn button [{title :title action :action color :color icon :icon href :href
-               :or {color :primary :href "#"}}]
+               style :style :or {color :primary :href "#" style {}}}]
   [:a.btn {:href href
            :class (str "btn-" (name color))
+           :style style
            :on-click (when action
                        (utils/prevent-and-call action))}
    " "

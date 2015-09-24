@@ -1,10 +1,25 @@
 (ns timers.state
   (:require [reagent.core :as reagent :refer [atom]]
             [reagent.session :as session]
+            [timers.lib.cache :as cache]
             [timers.lib.marauder :as marauder]))
 
-(defonce state (atom {:programs []}))
+;; -------------------------
+;; App State
+
+;; initialize the atom from the localstorage cache
+(def state (atom
+            (cache/get-atom)))
+
+;; save every update on localstorage
+(add-watch state :watcher
+           (fn [key atom old-state new-state]
+             (cache/save-atom! new-state)))
+
+
 (defonce current (atom {}))
+
+;; -------------------------
 ;; Ticker
 (defonce clock (atom 0))
 
@@ -15,7 +30,7 @@
                                     1000))
 
 
-;; -------------------------
+;; -------------------------resources/public/js/main.js
 ;; Utilities
 
 (defn accessor [store path]
@@ -53,7 +68,7 @@
 ;; Models DSL
 
 (defn transform-duration [x]
-  (* 1000 x))
+  (* 1000 60 x)) ; x = minutes
 
 (defn timers-with-offset [timers started-stamp current-stamp]
   (map-indexed (fn [idx timer]

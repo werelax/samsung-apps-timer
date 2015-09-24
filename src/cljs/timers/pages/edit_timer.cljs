@@ -22,7 +22,8 @@
         #(marauder/cleanup-current! timer)
         #(routes/program-path {:program-id program-id}))))
      [:div.content
-      (let [{title :title duration :duration} (marauder/get-current timer)]
+      (let [{title :title duration :duration :as current-timer}
+            (marauder/get-current timer)]
         [:form.fill-form {:action "#"}
          [:div.form-item
           [:label {:for "title"} "Nombre"]
@@ -34,4 +35,15 @@
           [:input {:name "min", :type "number"
                    :value duration
                    :on-change (utils/form-updater timer :duration
-                                                  #(js/parseInt % 10))}]]])]]))
+                                                  #(js/parseInt % 10))}]]
+         (when timer-id
+           [:div
+            [:label "Delete this timer:"]
+            (elements/button {:title " DELETE"
+                              :color :terciary
+                              :icon "fa-close"
+                              :style {"width" "100%"}
+                              :action (utils/call-and-go
+                                       #(marauder/remove! timer current-timer)
+                                       #(routes/program-path
+                                         {:program-id program-id}))})])])]]))

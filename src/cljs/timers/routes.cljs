@@ -24,7 +24,7 @@
   (session/put! :current-page {:name :edit-timer
                                :params [program-id nil]}))
 
-(secretary/defroute "/:program-id/edit" [program-id]
+(secretary/defroute edit-program-path "/:program-id/edit" [program-id]
   (session/put! :current-page {:name :edit-program
                                :params [program-id]}))
 

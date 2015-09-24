@@ -1,21 +1,14 @@
 * ACTIONABLES
-- [ ] The timer screen
-- [ ] Change to the next timer of the program
-- [ ] End of program screen (a info msg + just one button: [OK])
-- [ ] A initial warmup screen would be good, too (like a 5s countdown)
+
+- [X] Save everything to localstorage
+- [X] Add a delete button on timer edit (not on new)
+
+- [X] Add a edit button to edit the current program
+- [X] Add a delete button on program delete (not on new)
+- [ ] Change them minutes to actual minutes
+
+- [ ] Pack the finished app and upload it to samsung
 
 * DEBT
 
-- [MISSING] edit/delete the timers
-- [MISSING] edit/delete the programs
-
 - [IMPROVEMENT] show the program you're in (for the timer listing + time screen)
-
-* MISSING
-** Deletions / Editions
-1. Deleting (editing?) a program
-2. Deleting (editing?) a timer
-
-Both can be solved implemeting some kind of "edit mode" that shows two
-action buttons below every item (and separates the items a bit so it
-becomes easy to recognize which button belongs to which item).

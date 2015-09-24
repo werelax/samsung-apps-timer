@@ -45,7 +45,7 @@
   (-update-current! resource transform params))
 
 (defonce uid
-  (let [i (atom 0)]
+  (let [i (atom (.now js/Date))]
     #(swap! i inc)))
 
 (defn get-id [] {:id (uid)})
@@ -74,9 +74,9 @@
        (-bake-new [_ params] (apply generator params))
        (conj! [_ item]
          (swap! atom update-in path
-                #(conj % (if (id-key item)
-                           item
-                           (merge item (get-id))))))
+                #(conj (or % []) (if (id-key item)
+                                   item
+                                   (merge item (get-id))))))
        (reset! [_ coll]
          (swap! atom assoc-in path coll))
        (find-by [this key value]
@@ -84,11 +84,11 @@
                  (get-all this)))
        (replace! [_ old new]
          (swap! atom update-in path
-                #(replace {old new} %)))
+                #(replace {old new} (or % []))))
        (remove! [_ item]
-           (swap! atom update-in path
-         (let [trans (remove #(= item %))]
-                  #(into [] trans %))))
+         (swap! atom update-in path
+                (let [trans (remove #(= item %))]
+                  #(into [] trans (or % [])))))
        AtomCollectionEditableItem
        (set-current! [_ item]
          (swap! current-atom assoc-in path item))

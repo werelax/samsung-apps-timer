@@ -7,17 +7,26 @@
             [timers.routes :as routes]))
 
 (defn page [program-id]
-  [:div
-   (elements/top-bar
-    (elements/two-button-bar
-     {:title "ADD"
-      :href (routes/new-timer-path {:program-id program-id})
-      :color :primary}
-     {:title "START"
-      :href (routes/start-program-path {:program-id program-id})
-      :color :secondary}))
-   (listing/listing #(marauder/find-by state/timer
-                                       :program-id program-id)
-                    :title
-                    #(routes/edit-timer-path {:program-id program-id
-                                              :timer-id (:id %)}))])
+  (let [timers (marauder/find-by state/timer
+                                 :program-id program-id)]
+    [:div
+     (elements/top-bar
+      (elements/two-button-bar
+       {:title "EDIT"
+        :href (routes/edit-program-path {:program-id program-id})
+        :color :terciary}
+       {:title "NEW TIMER"
+        :href (routes/new-timer-path {:program-id program-id})
+        :color :secondary}))
+     (listing/listing (constantly timers)
+                      :title
+                      #(routes/edit-timer-path {:program-id program-id
+                                                :timer-id (:id %)}))
+     (if (empty? timers)
+       [:h3 {:style {:text-align "center"}} "Add some timers."]
+       (elements/button {:title " START!"
+                         :color :primary
+                         :icon "fa-play"
+                         :style {"width" "100%"}
+                         :href (routes/start-program-path {:program-id program-id})
+                         }))]))
