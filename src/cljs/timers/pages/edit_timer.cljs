@@ -26,14 +26,14 @@
             (marauder/get-current timer)]
         [:form.fill-form {:action "#"}
          [:div.form-item
-          [:label {:for "title"} "Nombre"]
+          [:label {:for "title"} "Name"]
           [:input {:name "title", :type "text"
                    :value title
                    :on-change (utils/form-updater timer :title)}]]
          [:div.form-item
-          [:label {:for "min"} "Minutos"]
+          [:label {:for "min"} "Minutes"]
           [:input {:name "min", :type "number"
-                   :value (max duration 1)
+                   :value duration
                    :on-change (utils/form-updater timer :duration
                                                   #(js/parseInt % 10))}]]
          (when timer-id

@@ -25,7 +25,7 @@
       [:form.fill-form
        {:on-submit #(.preventDefault %)}
        [:div.form-item
-        [:label {:for "title"} "Nombre"]
+        [:label {:for "title"} "Name"]
         [:input {:name "title" :type "text"
                  :value (get current-program :title)
                  :on-change (utils/form-updater program :title)}]]
