@@ -7,7 +7,19 @@
               [timers.pages.program :as program]
               [timers.pages.timer :as timer]
               [timers.pages.edit-program :as edit-program]
-              [timers.pages.edit-timer :as edit-timer]))
+              [timers.pages.edit-timer :as edit-timer]
+              [cljsjs.jquery]))
+
+;; -------------------------
+;; Fastclick Hack
+(-> (js/$ "body")
+    (.on "touchstart click" "a"
+         (fn [e]
+           (.preventDefault e)
+           (let [href (-> e .-currentTarget .-href)]
+             (when-not (or (= href "#") (= href ""))
+               (set! (.-href (.-location js/window))
+                     href))))))
 
 ;; -------------------------
 ;; Route-page Map

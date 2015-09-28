@@ -33,7 +33,7 @@
          [:div.form-item
           [:label {:for "min"} "Minutos"]
           [:input {:name "min", :type "number"
-                   :value duration
+                   :value (max duration 1)
                    :on-change (utils/form-updater timer :duration
                                                   #(js/parseInt % 10))}]]
          (when timer-id

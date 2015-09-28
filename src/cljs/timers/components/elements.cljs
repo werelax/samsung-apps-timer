@@ -15,8 +15,8 @@
   [:a.btn {:href href
            :class (str "btn-" (name color))
            :style style
-           :on-click (when action
-                       (utils/prevent-and-call action))}
+           :on-touch-start (when action
+                             (utils/prevent-and-call action))}
    " "
    (if icon
      [:span.fa {:class icon} title]

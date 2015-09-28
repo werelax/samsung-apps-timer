@@ -11,13 +11,22 @@
                                  :program-id program-id)]
     [:div
      (elements/top-bar
-      (elements/two-button-bar
-       {:title "EDIT"
-        :href (routes/edit-program-path {:program-id program-id})
-        :color :terciary}
-       {:title "NEW TIMER"
-        :href (routes/new-timer-path {:program-id program-id})
-        :color :secondary}))
+      [:div
+       (elements/two-button-bar
+        {:title "BACK"
+         :href (routes/main-path)
+         :color :primary
+         :style {"background-color" "#888"}}
+        {:title "EDIT"
+         :href (routes/edit-program-path {:program-id program-id})
+         :color :terciary})
+       [:hr]
+       (elements/button {:title "NEW TIMER"
+                         :href (routes/new-timer-path {:program-id program-id})
+                         :color :secondary
+                         :style {"width" "100%"}
+                         })
+       ])
      (listing/listing (constantly timers)
                       :title
                       #(routes/edit-timer-path {:program-id program-id

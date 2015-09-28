@@ -18,6 +18,8 @@
                  [org.clojure/clojurescript "1.7.122" :scope "provided"]
                  [secretary "1.2.3"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
+                 ;; jquery
+                 [cljsjs/jquery "2.1.4-0"]
                  ]
 
   :plugins [[lein-environ "1.0.0"]
@@ -74,9 +76,15 @@
 
                    :cljsbuild {:builds {:app {:source-paths ["env/dev/cljs"]
                                               :compiler {:main "timers.dev"
-                                                         :source-map true}}
-}
-}}
+                                                         :source-map true}}}}}
+
+             :prod {:source-paths ["env/dev/clj"]
+                    :env {:dev false}
+                    :cljsbuild {:builds {:app {:source-paths ["env/prod/cljs"]
+                                               :compiler
+                                               {:optimizations :advanced
+                                                :pretty-print false}}}}}
+
 
              :uberjar {:hooks [leiningen.cljsbuild minify-assets.plugin/hooks]
                        :env {:production true}
